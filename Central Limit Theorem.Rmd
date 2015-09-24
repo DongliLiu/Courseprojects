@@ -1,0 +1,62 @@
+---
+title: "Central Limit Theorem"
+author: "Dongli Liu"
+date: "2015Äê9ÔÂ23ÈÕ"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+---
+
+This document is to investigate the exponential distribution in R and compare it with the Central Limit Theorem. As requested by the instructor, pre-conditions are:   
+1. Set *lambda = 0.2* for all of the simulations;   
+2. Investigate the distribution of averages of 40 exponentials;   
+3. do a thousand simulations.   
+
+Illustrate via simulation and associated explanatory text the properties of the distribution of the mean of 40 exponentials.  We need to:    
+1. Show the sample mean and compare it to the theoretical mean of the distribution;   
+2. Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution;      
+3. Show that the distribution is approximately normal.      
+
+Here we do this step by step. Firstly let's set  *lambda = 0.2*
+```{r}
+lambda <- 0.2
+```
+
+Then theoretically, for a distribution of averages of 40 exponentials, mean is:
+```{r}
+1/lambda;
+```
+standard deviation is:
+```{r}
+(1/lambda)/(40)^0.5;
+```
+
+Now is the simulation parts: 
+```{r}
+set.seed(923) # So that we could reproduce this result
+mns = NULL
+for (i in 1: 1000) mns = c(mns, mean(rexp(40, rate=lambda)))
+```
+
+It is easy to see that sample mean is nearly same as theoretical mean: 
+```{r}
+mean(mns)
+```
+
+And for sample standard deviation:
+```{r}
+sd(mns)
+```
+
+Next, let's have a look at the histogram of this distribution:
+```{r}
+hist(mns, breaks=20)
+```
+
+We could see that the histogram is quite different with  distribution of 1000 random exponentials; instead, it is much more like a Gaussian distribution via normal Q-Q plot:
+```{r}
+par(mfrow = c(1,2))
+hist(rexp(1000))
+qqnorm(mns)
+```
+

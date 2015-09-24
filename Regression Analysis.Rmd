@@ -1,0 +1,46 @@
+---
+title: "Regression Analysis"
+author: "Dongli Liu"
+date: "2015Äê9ÔÂ24ÈÕ"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+---
+
+As requested in course project of Regression Models, this analysis is to answer following two questions:    
+1. "Is an automatic or manual transmission better for MPG"       
+2. "Quantify the MPG difference between automatic and manual transmissions"
+
+Let's first have a look at `mtcars` data set.
+```{r}
+attach(mtcars)
+summary(mtcars)
+```
+
+Which means the variable stands for transmission type shall be changed to factor:
+```{r}
+mtcars$am <- factor(mtcars$am, levels = c(0, 1), labels = c("automatic", "manual"))
+```
+
+Now it is fine for further analysis:
+```{r}
+summary(mtcars$am)
+```
+
+Through following box-plot, we could feel there may be a difference between *manual* and *automatic* transmissons:
+```{r}
+plot(mtcars$am, mtcars$mpg)
+```
+
+To answer those two questions formally, we could adopt a standard regression anlysis process, while `mpg` as the response and `am` as the input:
+```{r}
+fit <- lm(mpg~am, data=mtcars)
+summary(fit)
+```
+
+How could we interpret this result?    
+1. We could see the *Coefficient* for `ammanual` is positive and statistical significant, means manual is better than automatic transmission for MPG.    
+2. And the quantified MPG difference between automatic and manual transmissions is:
+```{r}
+summary(fit)$coef[2,1]
+```
